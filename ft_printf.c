@@ -1,73 +1,84 @@
-#include "ft_printf.h"
+#include "includes/ft_printf.h"
 
-/*int main(int argc, char** argv)
-{
-
-}*/
-
-#include <stdio.h>
-#include <stdarg.h>
-#include <string.h>
-
-void var(char *format, ...)
-{
-	va_list ap;
-
-	va_start(ap, format);
-	if(!strcmp(format, "%d"))
-	{
-		int x = va_arg (ap, int);
-		printf ("You passed decimal object with value %d\n", x);
-	}
-
-	if(!strcmp(format, "%s"))
-	{
-		char *p = va_arg (ap, char *);
-		printf ("You passed c-string \"%s\"\n", p);
-	}
-	va_end (ap);
-}
+struct	s_parser{
+	char	flags;
+	int		width;
+	int		precision;
+	char	type;
+};
 
 /*
-int main(void)
+void	ft_parser(char *conv, va_list arg_ptr);
 {
-	var("%d", 255, 2);
-	var("%s", "test string");
-	ft_printf("");
-	return 0;
+	if ()
 }
 */
 
-#include <stdio.h>
-#include <stdarg.h>
-double sum_series(int, ...);
+int	ft_printf(char *arg, ...)
+{
+	va_list arg_ptr;
+	char *str;
+	char *conv;
+	char *text; // может и не надо
+
+	va_start(arg_ptr, arg);
+	conv = ft_strchr(arg, '%');
+	while (*arg != '%')
+		ft_putchar_fd(*arg++, 1);
+	if (conv)
+	{
+		ft_parser(conv, arg_ptr);
+		printf("'%s'", conv);
+	}
+
+	va_end (arg_ptr);
+	return (ft_strlen(arg));
+}
 
 int main(void)
 {
-	double d;
-	d = sum_series(5.0, 0.5, 0.25, 0.125, 0.0625, 0.03125);
-	printf("Sum of series is %f\n",d);
+	ft_printf("Sum of series is %d");
 	return 0;
+
 }
 
-double sum_series(int num, ...)
+
+/*
+#include <stdio.h>
+
+# define FLG_NONE	0b00000000
+# define FLG_ONE	0b00000001
+# define FLG_TWO	0b00000010
+# define FLG_THREE	0b00000100
+# define FLG_FOUR	0b00001000
+
+int main()
 {
-	double sum = 0.0, t;
-	va_list argptr;
+	unsigned char	flags;
 
-/* инициализация argptr */
-	va_start (argptr, num);
+	flags = FLG_NONE;
+	if (flags & FLG_ONE)
+		printf("[-] FLG_ONE exist\n");
+	else
+		printf("[+] FLG_ONE not exist\n");
 
-/* сумма последовательности */
-	for(; num; num--) {
-		if (sum == 0.0)
-			sum += num;
-		t = va_arg(argptr,double);
-		printf("%f\n", t);
-		sum += t;
-	}
+	flags = flags | FLG_ONE;
+	if (flags & FLG_ONE)
+		printf("[+] FLG_ONE exist\n");
+	else
+		printf("[-] FLG_ONE not exist\n");
 
-/* завершение */
-	va_end(argptr);
-	return sum;
-}
+	flags = flags | FLG_TWO;
+	if ((flags & FLG_ONE) && (flags & FLG_TWO))
+		printf("[+] FLG_ONE and FLG_TWO exist\n");
+	else
+		printf("[-] FLG_ONE or FLG_TWO not exist\n");
+
+	flags = flags & (~FLG_TWO);
+	if ((flags & FLG_ONE) && (flags & FLG_TWO))
+		printf("[-] FLG_ONE and FLG_TWO exist\n");
+	else
+		printf("[+] FLG_ONE or FLG_TWO not exist\n");
+
+	return (0);
+}*/
