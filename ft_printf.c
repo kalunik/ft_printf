@@ -1,25 +1,46 @@
 #include "includes/ft_printf.h"
 
 struct	s_parser{
-	char	flags;
+	char	flags;  //
 	int		width;
 	int		precision;
 	char	type;
 };
 
-/*
-void	ft_parser(char *conv, va_list arg_ptr);
-{
-	if ()
-}
-*/
+//TODO
+//		conversions: 'c' 's' 'p' 'd' 'i' 'u' 'x' 'X' '%'
+//		flags: '-' '0' '.' '*'
 
-int	ft_printf(char *arg, ...)
+void	var_conf()
 {
-	va_list arg_ptr;
-	char *str;
-	char *conv;
-	char *text; // может и не надо
+
+}
+
+char	ft_reader(char *conv, va_list arg_ptr)
+{
+	struct s_parser	fwpt;
+	char			*types = "cspdiuxX%"; //FIXME можно назначать строку при инициализации?
+
+	conv++;
+	while (types)
+	{
+		printf("-%c\n", *types);
+		if (*conv == *types)
+		{
+			fwpt.type = ft_strdup(types);
+			return (fwpt.type);
+		}
+		types++;
+	}
+		//printf("'%s'", &fwpt.type);
+}
+
+int	ft_printf(const char *arg, ...)
+{
+	va_list	arg_ptr;
+	char	*str;
+	char	*conv;
+	char	*text; // может и не надо
 
 	va_start(arg_ptr, arg);
 	conv = ft_strchr(arg, '%');
@@ -27,8 +48,7 @@ int	ft_printf(char *arg, ...)
 		ft_putchar_fd(*arg++, 1);
 	if (conv)
 	{
-		ft_parser(conv, arg_ptr);
-		printf("'%s'", conv);
+		printf("'%c'", ft_reader(conv, arg_ptr));
 	}
 
 	va_end (arg_ptr);
