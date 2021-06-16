@@ -1,41 +1,69 @@
 #include "includes/ft_printf.h"
 
-struct	s_parser{
-	char	flags;  //
-	int		width;
-	int		precision;
-	char	type;
-};
+
 
 //TODO
 //		conversions: 'c' 's' 'p' 'd' 'i' 'u' 'x' 'X' '%'
 //		flags: '-' '0' '.' '*'
 
-void	var_conf()
+void	ft_var_output(conf_parser var, va_list arg_ptr)
+{
+	char c;
+	char *s;
+	char *p;
+
+	if (var.type == 'c')
+	{
+		c = va_arg(arg_ptr, int);
+		ft_putchar_fd(c, 1);
+	}
+	else if (var.type == 's')
+	{
+		s = va_arg(arg_ptr, char *);
+		ft_putstr_fd(s, 1);
+	}
+	else if (var.type == 'p')
+	{
+		p = va_arg(arg_ptr, char *);
+		ft_putstr_fd(p, 1);
+	}
+}
+
+/*
+conf_parser	ft_flag_conf(char *conv, conf_parser var)
 {
 
 }
+*/
 
-char	ft_reader(char *conv, va_list arg_ptr)
+conf_parser	ft_type_conf(char *conv, conf_parser var)
 {
-	struct s_parser	fwpt;
-	char			*types = "cspdiuxX%"; //FIXME можно назначать строку при инициализации?
+	char	*types;
+	char	*temp;
 
 	conv++;
-	while (types)
+	types = ft_strdup("cspdiuxX%");
+	temp = types;
+	while (*types)
 	{
-		printf("-%c\n", *types);
 		if (*conv == *types)
-		{
-			fwpt.type = ft_strdup(types);
-			return (fwpt.type);
-		}
+			var.type = *conv;
 		types++;
 	}
-		//printf("'%s'", &fwpt.type);
+	free(temp);
+	return (var);
 }
 
-int	ft_printf(const char *arg, ...)
+void	ft_var_conf(char *conv, va_list arg_ptr)
+{
+	conf_parser	var;
+
+	var = ft_type_conf(conv, var);
+	//printf("\ntype :: '%s'", &var.type);
+	ft_var_output(var, arg_ptr);
+}
+
+int		ft_printf(const char *arg, ...)
 {
 	va_list	arg_ptr;
 	char	*str;
@@ -46,20 +74,18 @@ int	ft_printf(const char *arg, ...)
 	conv = ft_strchr(arg, '%');
 	while (*arg != '%')
 		ft_putchar_fd(*arg++, 1);
-	if (conv)
-	{
-		printf("'%c'", ft_reader(conv, arg_ptr));
-	}
-
+	ft_var_conf(conv, arg_ptr);
 	va_end (arg_ptr);
 	return (ft_strlen(arg));
 }
 
 int main(void)
 {
-	ft_printf("Sum of series is %d");
-	return 0;
+	char p = 'r';
 
+	ft_printf("Sum of series is %p%", &p);
+	printf("\n%p", &p);
+	return 0;
 }
 
 
