@@ -18,5 +18,10 @@ typedef struct	s_parser{
 # define FLG_THREE	0b00000100
 # define FLG_FOUR	0b00001000
 
+char	*ft_itoa_hex(long long n);
+char	*ft_itoa_hex_upper(long long n);
+void	ft_putaddress_fd(long long n, int fd);
+void	ft_puthex_fd(long long n, int fd);
+void	ft_puthex_upper_fd(long long n, int fd);
 
 #endif

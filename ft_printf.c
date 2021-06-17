@@ -8,9 +8,10 @@
 
 void	ft_var_output(conf_parser var, va_list arg_ptr)
 {
-	char c;
-	char *s;
-	char *p;
+	char			c;
+	char			*s;
+	unsigned long	p;
+	unsigned int	d;
 
 	if (var.type == 'c')
 	{
@@ -24,8 +25,27 @@ void	ft_var_output(conf_parser var, va_list arg_ptr)
 	}
 	else if (var.type == 'p')
 	{
-		p = va_arg(arg_ptr, char *);
-		ft_putstr_fd(p, 1);
+		p = va_arg(arg_ptr, unsigned long);
+		ft_putaddress_fd(p, 1);
+	}
+	else if (var.type == 'd' || var.type == 'i')
+	{
+		d = va_arg(arg_ptr, int);
+		ft_putnbr_fd(d, 1);
+	}
+	else if (var.type == 'u')
+	{
+		d = va_arg(arg_ptr, unsigned int);
+		ft_puthex_fd(d, 1);
+	}
+	else if (var.type == 'U')
+	{
+		d = va_arg(arg_ptr, unsigned int);
+		ft_puthex_upper_fd(d, 1);
+	}
+	else if (var.type == '%')
+	{
+		ft_putchar_fd('%', 1);
 	}
 }
 
@@ -81,10 +101,10 @@ int		ft_printf(const char *arg, ...)
 
 int main(void)
 {
-	char p = 'r';
+	unsigned int p = 4294967295;
 
-	ft_printf("Sum of series is %p%", &p);
-	printf("\n%p", &p);
+	ft_printf("Mine	 -- '%x'", p);
+	printf("\nOriginal -- '%X'", p);
 	return 0;
 }
 
