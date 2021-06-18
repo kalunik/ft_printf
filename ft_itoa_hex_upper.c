@@ -43,7 +43,7 @@ static char	ft_dec_in_hex(short int storage)
 	return (r);
 }
 
-char	*ft_itoa_hex(long long n)
+char	*ft_itoa_hex_upper(long long n)
 {
 	short int	d;
 	char		*r;

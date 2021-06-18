@@ -1,6 +1,6 @@
 #include "includes/ft_printf.h"
 
-void	ft_puthex_fd(long long n, int fd)
+void	ft_puthex_upper_fd(long long n, int fd)
 {
 	char	*str;
 

@@ -11,7 +11,7 @@ void	ft_var_output(conf_parser var, va_list arg_ptr)
 	char			c;
 	char			*s;
 	unsigned long	p;
-	unsigned int	d;
+	long long		d;
 
 	if (var.type == 'c')
 	{
@@ -26,19 +26,25 @@ void	ft_var_output(conf_parser var, va_list arg_ptr)
 	else if (var.type == 'p')
 	{
 		p = va_arg(arg_ptr, unsigned long);
-		ft_putaddress_fd(p, 1);
+		ft_puthex_fd(p, 1);
 	}
 	else if (var.type == 'd' || var.type == 'i')
 	{
 		d = va_arg(arg_ptr, int);
+		//printf("\n%d -- var_output\n", d);
 		ft_putnbr_fd(d, 1);
 	}
 	else if (var.type == 'u')
 	{
 		d = va_arg(arg_ptr, unsigned int);
+		ft_putnbr_fd(d, 1);
+	}
+	else if (var.type == 'x')
+	{
+		d = va_arg(arg_ptr, unsigned int);
 		ft_puthex_fd(d, 1);
 	}
-	else if (var.type == 'U')
+	else if (var.type == 'X')
 	{
 		d = va_arg(arg_ptr, unsigned int);
 		ft_puthex_upper_fd(d, 1);
@@ -101,10 +107,10 @@ int		ft_printf(const char *arg, ...)
 
 int main(void)
 {
-	unsigned int p = 4294967295;
+	int p = -5;
 
-	ft_printf("Mine	 -- '%x'", p);
-	printf("\nOriginal -- '%X'", p);
+	ft_printf("Mine	 -- '%p'", &p);
+	printf("\nOriginal -- '%p'", &p);
 	return 0;
 }
 

@@ -20,7 +20,7 @@ typedef struct	s_parser{
 
 char	*ft_itoa_hex(long long n);
 char	*ft_itoa_hex_upper(long long n);
-void	ft_putaddress_fd(long long n, int fd);
+void	ft_putptr_fd(long long n, int fd);
 void	ft_puthex_fd(long long n, int fd);
 void	ft_puthex_upper_fd(long long n, int fd);
 
