@@ -26,13 +26,13 @@ void	ft_var_output(conf_parser var, va_list arg_ptr)
 	else if (var.type == 'p')
 	{
 		p = va_arg(arg_ptr, unsigned long);
+		ft_putstr_fd("0x", 1);
 		ft_puthex_fd(p, 1);
 	}
 	else if (var.type == 'd' || var.type == 'i')
 	{
 		d = va_arg(arg_ptr, int);
-		//printf("\n%d -- var_output\n", d);
-		ft_putnbr_fd(d, 1);
+		ft_putnbr_fd(d, 1); //FIXME delete comments, check '-2147483648'
 	}
 	else if (var.type == 'u')
 	{
@@ -47,11 +47,11 @@ void	ft_var_output(conf_parser var, va_list arg_ptr)
 	else if (var.type == 'X')
 	{
 		d = va_arg(arg_ptr, unsigned int);
-		ft_puthex_upper_fd(d, 1);
+		ft_puthex_up_fd(d, 1);
 	}
 	else if (var.type == '%')
 	{
-		ft_putchar_fd('%', 1);
+		ft_putstr_fd("%", 1);
 	}
 }
 
@@ -107,10 +107,38 @@ int		ft_printf(const char *arg, ...)
 
 int main(void)
 {
-	int p = -5;
+	char			c = 'a';
+	char			*s = "Abdulah Sun !";
+	int				d = 214748364;
+	unsigned int	u = 2147483648;
 
-	ft_printf("Mine	 -- '%p'", &p);
-	printf("\nOriginal -- '%p'", &p);
+
+	ft_printf("\n'c'\nMine	 -- '%c'", c);
+	printf("\nOriginal -- '%c'\n", c);
+
+	ft_printf("\n's'\nMine	 -- '%s'", s);
+	printf("\nOriginal -- '%s'\n", s);
+
+	ft_printf("\n'p'\nMine	 -- '%p'", &s);
+	printf("\nOriginal -- '%p'\n", &s);
+
+	ft_printf("\n'd'\nMine	 -- '%d'", d);
+	printf("\nOriginal -- '%d'\n", d);
+
+	ft_printf("\n'i'\nMine	 -- '%i'", d);
+	printf("\nOriginal -- '%i'\n", d);
+
+	ft_printf("\n'u'\nMine	 -- '%u'", u);
+	printf("\nOriginal -- '%u'\n", u);
+
+	ft_printf("\n'x'\nMine	 -- '%x'", u);
+	printf("\nOriginal -- '%x'\n", u);
+
+	ft_printf("\n'X'\nMine	 -- '%X'", d);
+	printf("\nOriginal -- '%X'\n", d);
+
+	ft_printf("\nMine	 -- '%%'");
+	printf("\nOriginal  -- '%%'\n");
 	return 0;
 }
 
