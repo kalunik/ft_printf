@@ -1,8 +1,10 @@
 #include "includes/ft_printf.h"
 
 //TODO
-//		conversions: 'c' 's' 'p' 'd' 'i' 'u' 'x' 'X' '%'
-//		flags: '-' '0' '.' '*'
+//		conversions:	'c' 's' 'p' 'd' 'i' 'u' 'x' 'X' '%'
+//		flags: 			'-' '0'
+//		width:			'*'
+//		precision:		'.'
 
 void	ft_var_output(t_conf_parser var, va_list arg_ptr)
 {
@@ -34,20 +36,27 @@ void	ft_var_output(t_conf_parser var, va_list arg_ptr)
 
 t_conf_parser	ft_flag_conf(char *conv, t_conf_parser var)
 {
-	unsigned char	flags;
+	short int	flags;
 	//char	*flag_set;
 
 
 	//flag_set = ft_strdup("-0.*");
 	flags = FLG_NONE;
-	while (*conv != '.' )
+	//printf("\n'%s' -- conv1\n ", conv);
+	while (*conv != var.type)
 	{
-		while (*conv != '.' )
-		{
-			if (*conv == '-')
-				flags |= FLG_FOUR;
-		}
+		if (*conv == '-')
+			flags |= FLG_ONE;
+		else if (*conv == '0')
+			flags |= FLG_TWO;
+		else if ((ft_isdigit(*conv) && *conv != '0') || *conv == '*')
+			flags |= FLG_THREE;
+		else if (*conv == '.')
+			flags |= FLG_FOUR;
+		conv++;
+		printf("\nflags -- '%d'\n", flags);
 	}
+	//printf("\n'%s' -- conv1\n ", conv);
 	printf("%c", flags);
 	return (var);
 }
@@ -56,30 +65,38 @@ t_conf_parser	ft_type_conf(char *conv, t_conf_parser var)
 {
 	char	*type_set;
 	char	*temp;
+	int		i;
 
-	conv++;
+	i++;
 	type_set = ft_strdup("cspdiuxX%");
 	temp = type_set;
 	while (*conv)
 	{
-		while (*type_set)
+		//printf("\n'%s' -- conv1\n ", conv);
+		while (type_set[i])
 		{
-			if (*conv == *type_set)
+			if (*conv == type_set[i])
+			{
 				var.type = *conv;
-			type_set++;
+				free(temp);
+				return (var);
+			}
+			i++;
 		}
+		i = 0;
 		conv++;
 	}
 	free(temp);
-	return (var);
+	return (var); //todo неопределнное поведение
 }
 
 int	ft_var_conf(char *conv, va_list arg_ptr)
 {
 	t_conf_parser	var;
 
-	var = ft_type_conf(conv, var);
-	//var = ft_flag_conf(conv, var);
+	var = ft_type_conf(conv, var);	//todo find type first, skipping all flags
+	var = ft_flag_conf(conv, var);
+	//printf("'%s' --- conv ", conv);
 	ft_var_output(var, arg_ptr);
 	//ft_printf(conv, arg_ptr);
 	return (var.count);
@@ -94,10 +111,10 @@ int	ft_printf(const char *arg, ...)
 
 	va_start(arg_ptr, arg);
 	conv = ft_strchr(arg, '%');
+	conv++;
 	while (*arg != '%')
 		ft_putchar_fd(*arg++, 1);
 	count = ft_var_conf(conv, arg_ptr);
-	conv += 2;
 	va_end (arg_ptr);
 	//printf("\n*conv -- '%c'\n", *conv);
 	return (count);
