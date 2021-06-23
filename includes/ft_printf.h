@@ -5,12 +5,13 @@
 # include <stdio.h>
 # include "libft.h"
 
-typedef struct	s_parser{
+typedef struct s_parser{
 	char	flags;
 	int		width;
 	int		precision;
 	char	type;
-}				conf_parser;
+	int		count;
+}				t_conf_parser;
 
 # define FLG_NONE	0b00000000
 # define FLG_ONE	0b00000001
@@ -20,5 +21,6 @@ typedef struct	s_parser{
 
 void	ft_puthex_fd(unsigned long n, int fd);
 void	ft_puthex_up_fd(unsigned long n, int fd);
+int		ft_printf(const char *arg, ...);
 
 #endif

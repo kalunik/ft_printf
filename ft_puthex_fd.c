@@ -2,10 +2,12 @@
 
 static void	ft_convert_fd(short int n, int fd)
 {
-	char *str = "abcdef";
+	char	*str;
 
+	str = ft_strdup("abcdef");
 	n = n % 10;
 	ft_putchar_fd(str[n], fd);
+	free(str);
 }
 
 void	ft_puthex_fd(unsigned long n, int fd)

@@ -2,8 +2,9 @@
 
 static void	ft_convert_up_fd(short int n, int fd)
 {
-	char *str = "ABCDEF";
+	char	*str;
 
+	str = ft_strdup("ABCDEF");
 	n = n % 10;
 	ft_putchar_fd(str[n], fd);
 }
