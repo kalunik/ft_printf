@@ -36,28 +36,34 @@ void	ft_var_output(t_conf_parser var, va_list arg_ptr)
 
 t_conf_parser	ft_flag_conf(char *conv, t_conf_parser var)
 {
-	short int	flags;
 	//char	*flag_set;
 
-
 	//flag_set = ft_strdup("-0.*");
-	flags = FLG_NONE;
+	var.flags = FLG_NONE;
+// 	printf("\nflags§ -- '%.8uc'\n", flags);
 	//printf("\n'%s' -- conv1\n ", conv);
-	while (*conv != var.type)
+	while (*conv == '-' || *conv == '0')
 	{
 		if (*conv == '-')
-			flags |= FLG_ONE;
-		else if (*conv == '0')
-			flags |= FLG_TWO;
-		else if ((ft_isdigit(*conv) && *conv != '0') || *conv == '*')
+		{
+			var.flags |= FLG_MINUS;
+			var.flags &= ~FLG_ZERO;
+		}
+		else if (*conv == '0' && (var.flags << 7) != 128)
+			var.flags |= FLG_ZERO;
+		/*else if ((ft_isdigit(*conv) && *conv != '0') || *conv == '*')
 			flags |= FLG_THREE;
 		else if (*conv == '.')
-			flags |= FLG_FOUR;
+			flags |= FLG_FOUR;*/
 		conv++;
-		printf("\nflags -- '%d'\n", flags);
+		printf("\nflags -- '%d'\n", var.flags);
 	}
-	//printf("\n'%s' -- conv1\n ", conv);
-	printf("%c", flags);
+	while (*conv != var.type)
+	{
+		if (*conv )
+	}
+	//printf("\n'%s' -- conv1\n ", conv); -+0
+	printf("%c", var.flags);
 	return (var);
 }
 
