@@ -60,7 +60,10 @@ t_conf_parser	ft_flag_conf(char *conv, t_conf_parser var)
 	}
 	while (*conv != var.type)
 	{
-		if (*conv )
+		if ((ft_isdigit(*conv) && *conv != '0') || *conv == '*')
+			var.flags |= FLG_THREE;
+		else if (*conv == '.')
+			var.flags |= FLG_FOUR;
 	}
 	//printf("\n'%s' -- conv1\n ", conv); -+0
 	printf("%c", var.flags);
