@@ -16,8 +16,8 @@ typedef struct s_parser{
 # define FLG_NONE	0b00000000
 # define FLG_MINUS	0b00000001
 # define FLG_ZERO	0b00000010
-# define FLG_THREE	0b00000100
-# define FLG_FOUR	0b00001000
+# define FLG_WDTH	0b00000100
+# define FLG_PRCSN	0b00001000
 
 void	ft_puthex_fd(unsigned long n, int fd);
 void	ft_puthex_up_fd(unsigned long n, int fd);

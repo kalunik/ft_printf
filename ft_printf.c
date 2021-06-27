@@ -34,14 +34,24 @@ void	ft_var_output(t_conf_parser var, va_list arg_ptr)
 		ft_putstr_fd("%", 1);
 }
 
+t_conf_parser	ft_wdth_prcsn(char *conv, t_conf_parser var, va_list arg_ptr)
+{
+	while (*conv == '-' || *conv == '0')
+		conv++;
+	while (*conv != '.' || *conv != var.type)
+	{
+		if (*conv == '*')
+			var.width = va_arg(arg_ptr, int);
+		else
+			var.width = ft_atoi(conv);
+		conv++;
+	}
+	return (var);
+}
+
 t_conf_parser	ft_flag_conf(char *conv, t_conf_parser var)
 {
-	//char	*flag_set;
-
-	//flag_set = ft_strdup("-0.*");
 	var.flags = FLG_NONE;
-// 	printf("\nflags§ -- '%.8uc'\n", flags);
-	//printf("\n'%s' -- conv1\n ", conv);
 	while (*conv == '-' || *conv == '0')
 	{
 		if (*conv == '-')
@@ -51,22 +61,18 @@ t_conf_parser	ft_flag_conf(char *conv, t_conf_parser var)
 		}
 		else if (*conv == '0' && (var.flags << 7) != 128)
 			var.flags |= FLG_ZERO;
-		/*else if ((ft_isdigit(*conv) && *conv != '0') || *conv == '*')
-			flags |= FLG_THREE;
-		else if (*conv == '.')
-			flags |= FLG_FOUR;*/
 		conv++;
-		printf("\nflags -- '%d'\n", var.flags);
+
 	}
 	while (*conv != var.type)
 	{
-		if ((ft_isdigit(*conv) && *conv != '0') || *conv == '*')
-			var.flags |= FLG_THREE;
-		else if (*conv == '.')
-			var.flags |= FLG_FOUR;
+		if (var.flags < 8 && (ft_isdigit(*conv) || *conv == '*'))
+			// *conv != '0'
+			var.flags |= FLG_WDTH;
+		else if (*conv == '.' && (ft_isdigit(*(conv+1)) || *(conv+1) == '*'))
+			var.flags |= FLG_PRCSN;
+		conv++;
 	}
-	//printf("\n'%s' -- conv1\n ", conv); -+0
-	printf("%c", var.flags);
 	return (var);
 }
 
@@ -81,7 +87,6 @@ t_conf_parser	ft_type_conf(char *conv, t_conf_parser var)
 	temp = type_set;
 	while (*conv)
 	{
-		//printf("\n'%s' -- conv1\n ", conv);
 		while (type_set[i])
 		{
 			if (*conv == type_set[i])
@@ -105,6 +110,8 @@ int	ft_var_conf(char *conv, va_list arg_ptr)
 
 	var = ft_type_conf(conv, var);	//todo find type first, skipping all flags
 	var = ft_flag_conf(conv, var);
+	if (var.flags >= 3)
+		var = ft_wdth_prcsn(conv, var);
 	//printf("'%s' --- conv ", conv);
 	ft_var_output(var, arg_ptr);
 	//ft_printf(conv, arg_ptr);
