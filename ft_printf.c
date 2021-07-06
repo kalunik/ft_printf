@@ -36,16 +36,32 @@ void	ft_var_output(t_conf_parser var, va_list arg_ptr)
 
 t_conf_parser	ft_wdth_prcsn(char *conv, t_conf_parser var, va_list arg_ptr)
 {
+	va_list arg_clone;
+
 	while (*conv == '-' || *conv == '0')
 		conv++;
-	while (*conv != '.' || *conv != var.type)
+	if (*conv != '.' || *conv != var.type)
 	{
-		if (*conv == '*')
-			var.width = va_arg(arg_ptr, int);
-		else
+		if (*conv == '*') //TODO delete '*' if useless in mandatory part
+		{
+			va_copy(arg_clone, arg_ptr);
+			va_arg(arg_ptr,int);
+			var.width = va_arg(arg_ptr,int);
+		}
+		else if (ft_isdigit(*conv))
 			var.width = ft_atoi(conv);
-		conv++;
 	}
+	while (*conv != '.')
+		conv++;
+	if (*conv == '.')
+	{
+		conv++;
+		if (*conv == '*') //TODO delete '*' if useless in mandatory part
+			var.precision = va_arg(arg_ptr,int);
+		else if (ft_isdigit(*conv))
+			var.precision = ft_atoi(conv);
+	}
+	printf(" '%d' - '%d' - '%s'",  var.width, var.precision, conv);
 	return (var);
 }
 
@@ -69,7 +85,7 @@ t_conf_parser	ft_flag_conf(char *conv, t_conf_parser var)
 		if (var.flags < 8 && (ft_isdigit(*conv) || *conv == '*'))
 			// *conv != '0'
 			var.flags |= FLG_WDTH;
-		else if (*conv == '.' && (ft_isdigit(*(conv+1)) || *(conv+1) == '*'))
+		else if (*conv == '.' && (ft_isdigit(*(conv+1)) || *(conv+1) == '*'))//TODO delete '*'
 			var.flags |= FLG_PRCSN;
 		conv++;
 	}
@@ -110,8 +126,9 @@ int	ft_var_conf(char *conv, va_list arg_ptr)
 
 	var = ft_type_conf(conv, var);	//todo find type first, skipping all flags
 	var = ft_flag_conf(conv, var);
+	printf("%d", var.flags);
 	if (var.flags >= 3)
-		var = ft_wdth_prcsn(conv, var);
+		var = ft_wdth_prcsn(conv, var, arg_ptr);
 	//printf("'%s' --- conv ", conv);
 	ft_var_output(var, arg_ptr);
 	//ft_printf(conv, arg_ptr);

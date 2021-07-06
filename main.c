@@ -20,8 +20,8 @@ int	main(void)
 //	ft_printf("\n'p'\nMine	 -- '%p'", &s);
 //	printf("\nOriginal -- '%p'\n", &s);
 //
-	ft_printf("\n'd'\nMine	 -- '%-100%%d'", d);
-	printf("\nOriginal -- '%03d'\n", d);
+	ft_printf("\n'd'\nMine	 -- '%5.8%%d'", d, 10);
+	printf("\nOriginal -- '%10%%d'\n", d);
 //
 //	ft_printf("\n'i'\nMine	 -- '%i'", d);
 //	printf("\nOriginal -- '%i'\n", d);
