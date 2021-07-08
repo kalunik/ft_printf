@@ -24,9 +24,9 @@ void	ft_var_output(t_conf_parser *var, va_list arg_ptr)
 	}
 	else if (var->type == 'd' || var->type == 'i')
 		ft_putnbr_fd(va_arg(arg_ptr, int), 1);
-	else if (var.type == 'u')
+	else if (var->type == 'u') // FIXME input 2147483648 -- output -2147483648
 		ft_putnbr_fd(va_arg(arg_ptr, unsigned int), 1);
-	else if (var.type == 'x')
+	else if (var->type == 'x')
 		ft_puthex_fd(va_arg(arg_ptr, unsigned int), 1);
 	else if (var->type == 'X')
 		ft_puthex_up_fd(va_arg(arg_ptr, unsigned int), 1);
@@ -83,7 +83,7 @@ void	ft_flag_conf(char *conv, t_conf_parser *var)
 			// *conv != '0'
 			var->flags |= FLG_WDTH;
 		else if (*conv == '.' && (ft_isdigit(*(conv + 1)) || *(conv + 1) ==
-		'*')) //TODO delete '*'
+															 '*')) //TODO delete '*'
 			var->flags |= FLG_PRCSN;
 		conv++;
 	}
@@ -124,9 +124,20 @@ void ft_var_clean(t_conf_parser *var)
 	var->count = 0; //
 }
 
-	var = ft_type_conf(conv, var);	//todo find type first, skipping all flags
-	var = ft_flag_conf(conv, var);
-	//printf("'%s' --- conv ", conv);
+void	ft_var_conf(char *conv, t_conf_parser *var, va_list arg_ptr)
+{
+	ft_var_clean(var);
+	ft_type_conf(conv, var);	//todo find type first, skipping allflags
+	if (!var->type)
+		exit(0);
+	ft_flag_conf(conv, var);
+	//printf("\n'%d'-'%c'",var->flags, var->type);
+	if (var->flags > (FLG_MINUS | FLG_ZERO))
+	{
+		ft_wdth_prcsn(conv, var, arg_ptr);
+	}
+	//conv++;
+	//printf("\n'%c' --- var-type ", var.type);
 	ft_var_output(var, arg_ptr);
 	//ft_printf(conv, arg_ptr);
 }
