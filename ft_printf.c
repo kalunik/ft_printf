@@ -6,49 +6,9 @@
 //		width:			'*'
 //		precision:		'.'
 
-void	ft_c_out(t_conf_parser *var, va_list arg_ptr)
-{
-	int				i;
-	char			c;
 
-	i = 1;
-	c = va_arg(arg_ptr, int);
-	if (var->width > 1)
-	{
-		while (i <= var->width)
-		{
-			ft_putchar_fd(' ', 1);
-			i++;
-		}
-	}
-	else
-		i++;
-	ft_putchar_fd(c, 1);
-	var->count = i - 1;
-}
 
-void	ft_s_out(t_conf_parser *var, va_list arg_ptr)
-{
-	int		i;
-	int		len;
-	char	*s;
 
-	i = 1;
-	s = va_arg(arg_ptr, char *);
-	len = ft_strlen(s);
-	if (var->width > len)
-	{
-		while (i <= var->width - len)
-		{
-			ft_putchar_fd(' ', 1);
-			i++;
-		}
-	}
-	else
-		i = len;
-	ft_putstr_fd(s, 1);
-	var->count = i + len - 1;
-}
 
 void	ft_var_output(t_conf_parser *var, va_list arg_ptr)
 {
@@ -59,49 +19,12 @@ void	ft_var_output(t_conf_parser *var, va_list arg_ptr)
 	long long		d;
 
 	//printf("\n\n%d -- var_output -- width", var->width);
-	if (var->type == 'c')
-	{
+	if (var->type == 'c') //TODO fail w/h width %10c
 		ft_c_out(var, arg_ptr);
-		/*i = 1;
-		c = va_arg(arg_ptr, int);
-		if (var->width > 1)
-		{
-			while (i <= var->width)
-			{
-				ft_putchar_fd(' ', 1);
-				i++;
-			}
-		}
-		else
-			i++;
-		ft_putchar_fd(c, 1);
-		var->count = i - 1;*/
-	}
 	else if (var->type == 's')
-	{
 		ft_s_out(var, arg_ptr);
-		/*i = 1;
-		s = va_arg(arg_ptr, char *);
-		if (var->width > (int)ft_strlen(s))
-		{
-			while (i <= var->width - (int)ft_strlen(s))
-			{
-				ft_putchar_fd(' ', 1);
-				i++;
-			}
-		}
-		else
-		{
-			i = ft_strlen(s);
-		}
-		ft_putstr_fd(s, 1);
-		var->count = i + ft_strlen(s) - 1;*/
-	}
-else if (var->type == 'p')
-	{
-		ft_putstr_fd("0x", 1);
-		ft_puthex_fd(va_arg(arg_ptr, unsigned long), 1);
-	}
+	else if (var->type == 'p')
+		ft_p_out(var, arg_ptr);
 	else if (var->type == 'd' || var->type == 'i')
 	{
 		d = va_arg(arg_ptr, int);
@@ -110,10 +33,10 @@ else if (var->type == 'p')
 	}
 	else if (var->type == 'u') // FIXME input 2147483648 -- output -2147483648
 		ft_putnbr_fd(va_arg(arg_ptr, unsigned int), 1);
-	else if (var->type == 'x')
+/*	else if (var->type == 'x')
 		ft_puthex_fd(va_arg(arg_ptr, unsigned int), 1);
 	else if (var->type == 'X')
-		ft_puthex_up_fd(va_arg(arg_ptr, unsigned int), 1);
+		ft_puthex_up_fd(va_arg(arg_ptr, unsigned int), 1);*/
 	else if (var->type == '%')
 		ft_putstr_fd("%", 1);
 }

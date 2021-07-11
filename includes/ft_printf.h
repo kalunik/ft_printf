@@ -20,7 +20,10 @@ typedef struct s_parser{
 # define FLG_WDTH	0b00000100
 # define FLG_PRCSN	0b00001000
 
-void	ft_puthex_fd(unsigned long n, int fd);
+void	ft_c_out(t_conf_parser *var, va_list arg_ptr);
+void	ft_s_out(t_conf_parser *var, va_list arg_ptr);
+void	ft_p_out(t_conf_parser *var, va_list arg_ptr);
+void	ft_puthex_fd(unsigned long n, int fd, t_conf_parser *var);
 void	ft_puthex_up_fd(unsigned long n, int fd);
 int		ft_printf(const char *arg, ...);
 

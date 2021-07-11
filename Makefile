@@ -7,6 +7,7 @@ LIBR	=	ar rcs
 SRCS	=	ft_printf.c \
             ft_puthex_fd.c \
             ft_puthex_up_fd.c \
+            ft_c_out.c ft_s_out.c ft_p_out.c \
 
 OBJS	=	$(SRCS:.c=.o)
 $(NAME):	$(OBJS) $(LIBFT)/libft.a
