@@ -6,32 +6,96 @@
 //		width:			'*'
 //		precision:		'.'
 
-void	ft_var_output(t_conf_parser *var, va_list arg_ptr)
+void	ft_c_out(t_conf_parser *var, va_list arg_ptr)
 {
 	int				i;
 	char			c;
-	/*char			*s;
-	unsigned long	p;
-	long long		d;*/
+
+	i = 1;
+	c = va_arg(arg_ptr, int);
+	if (var->width > 1)
+	{
+		while (i <= var->width)
+		{
+			ft_putchar_fd(' ', 1);
+			i++;
+		}
+	}
+	else
+		i++;
+	ft_putchar_fd(c, 1);
+	var->count = i - 1;
+}
+
+void	ft_s_out(t_conf_parser *var, va_list arg_ptr)
+{
+	int		i;
+	int		len;
+	char	*s;
+
+	i = 1;
+	s = va_arg(arg_ptr, char *);
+	len = ft_strlen(s);
+	if (var->width > len)
+	{
+		while (i <= var->width - len)
+		{
+			ft_putchar_fd(' ', 1);
+			i++;
+		}
+	}
+	else
+		i = len;
+	ft_putstr_fd(s, 1);
+	var->count = i + len - 1;
+}
+
+void	ft_var_output(t_conf_parser *var, va_list arg_ptr)
+{
+	//int				i;
+	//char			c;
+	//char			*s;
+	//unsigned long	p;
+	long long		d;
 
 	//printf("\n\n%d -- var_output -- width", var->width);
 	if (var->type == 'c')
 	{
-		i = 0;
+		ft_c_out(var, arg_ptr);
+		/*i = 1;
 		c = va_arg(arg_ptr, int);
-
 		if (var->width > 1)
 		{
-			while (i++ < var->width - 1)
+			while (i <= var->width)
 			{
 				ft_putchar_fd(' ', 1);
+				i++;
 			}
 		}
+		else
+			i++;
 		ft_putchar_fd(c, 1);
+		var->count = i - 1;*/
 	}
 	else if (var->type == 's')
 	{
-		ft_putstr_fd(va_arg(arg_ptr, char *), 1);
+		ft_s_out(var, arg_ptr);
+		/*i = 1;
+		s = va_arg(arg_ptr, char *);
+		if (var->width > (int)ft_strlen(s))
+		{
+			while (i <= var->width - (int)ft_strlen(s))
+			{
+				ft_putchar_fd(' ', 1);
+				i++;
+			}
+		}
+		else
+		{
+			i = ft_strlen(s);
+		}
+		ft_putstr_fd(s, 1);
+		var->count = i + ft_strlen(s) - 1;*/
 	}
 else if (var->type == 'p')
 	{
@@ -39,7 +103,11 @@ else if (var->type == 'p')
 		ft_puthex_fd(va_arg(arg_ptr, unsigned long), 1);
 	}
 	else if (var->type == 'd' || var->type == 'i')
-		ft_putnbr_fd(va_arg(arg_ptr, int), 1);
+	{
+		d = va_arg(arg_ptr, int);
+		var->count = ft_strlen(ft_itoa(d));
+		ft_putnbr_fd(d, 1);
+	}
 	else if (var->type == 'u') // FIXME input 2147483648 -- output -2147483648
 		ft_putnbr_fd(va_arg(arg_ptr, unsigned int), 1);
 	else if (var->type == 'x')
@@ -136,7 +204,7 @@ void	ft_type_conf(const char *conv, t_conf_parser *var)
 void ft_var_clean(t_conf_parser *var)
 {
 	var->type = 0;
-	var->flags &= FLG_NONE;
+	var->flags = 0;
 	var->precision = 0;
 	var->width = 0;
 	var->count = 0;
@@ -182,9 +250,9 @@ int	ft_printf(const char *arg, ...)
 			arg += var.skip; //подсчет расстояния от % до типа
 
 		}
-		printf("\n -- count '%d' // var.count '%d'", count, var.count);
+		//printf("\n -- count '%d' // var.count '%d'", count, var.count);
 	}
 	va_end(arg_ptr);
-	//count++;
+	//count--;
 	return (count);
 }

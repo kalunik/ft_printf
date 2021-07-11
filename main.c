@@ -7,20 +7,25 @@
 int	main(void)
 {
 	int size;
-	char			c = 'a';
+	char			c = '0';
 	char			*s = "Abdulah Sun !";
 	int				d = 3002;
 	unsigned int	u = 214748364;
 
-	printf("\n'c'");
-	size = ft_printf("\nMine     -- '%5c' '%d'", c, d);
+
+/*
+	size = ft_printf("\nMine     -- '%c'", c);
 	printf("\n%d mine", size);
-	size = printf("\nOriginal -- '%5c' '%d'", c, d);
-	printf("\n%d original\n", size);
-
-	/*ft_printf("\n's'\nMine	 -- '%-s'",  s);
-	printf("\nOriginal -- '%s'\n", s);
-
+	size = printf("\nOriginal -- '%c'", c);
+	printf("\n%d original", size);
+	printf("\n'c'");
+*/
+	size = ft_printf("\nMine     -- '%14s' '%c'", s, c);
+	printf("\n%d mine", size);
+	size = printf("\nOriginal -- '%14s' '%c'", s, c);
+	printf("\n%d original", size);
+	printf("\n's'");
+	/*
 	ft_printf("\n'p'\nMine	 -- '%0p'", &s);
 	printf("\nOriginal -- '%p'\n", &s);
 
