@@ -6,15 +6,19 @@
 
 int	main(void)
 {
+	int size;
 	char			c = 'a';
 	char			*s = "Abdulah Sun !";
 	int				d = 3002;
-	unsigned int	u = 2147483648;
+	unsigned int	u = 214748364;
 
-	ft_printf("\n'c'\nMine	 -- '%-c'", c);
-	printf("\nOriginal -- '%c'\n", c);
+	printf("\n'c'");
+	size = ft_printf("\nMine     -- '%5c' '%d'", c, d);
+	printf("\n%d mine", size);
+	size = printf("\nOriginal -- '%5c' '%d'", c, d);
+	printf("\n%d original\n", size);
 
-	ft_printf("\n's'\nMine	 -- '%-s'",  s);
+	/*ft_printf("\n's'\nMine	 -- '%-s'",  s);
 	printf("\nOriginal -- '%s'\n", s);
 
 	ft_printf("\n'p'\nMine	 -- '%0p'", &s);
@@ -35,7 +39,7 @@ int	main(void)
 	ft_printf("\n'X'\nMine	 -- '%0X'", d);
 	printf("\nOriginal -- '%X'\n", d);
 
-	ft_printf("\nMine	 -- '%-%'");
-	printf("\nOriginal  -- '%-%'\n");
+	ft_printf("\nMine	 -- '%%'");
+	printf("\nOriginal  -- '%-%'\n");*/
 	return 0;
 }

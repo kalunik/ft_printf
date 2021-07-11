@@ -8,16 +8,32 @@
 
 void	ft_var_output(t_conf_parser *var, va_list arg_ptr)
 {
+	int				i;
 	char			c;
-	char			*s;
+	/*char			*s;
 	unsigned long	p;
-	long long		d;
+	long long		d;*/
 
+	//printf("\n\n%d -- var_output -- width", var->width);
 	if (var->type == 'c')
-		ft_putchar_fd(va_arg(arg_ptr, int), 1);
+	{
+		i = 0;
+		c = va_arg(arg_ptr, int);
+
+		if (var->width > 1)
+		{
+			while (i++ < var->width - 1)
+			{
+				ft_putchar_fd(' ', 1);
+			}
+		}
+		ft_putchar_fd(c, 1);
+	}
 	else if (var->type == 's')
+	{
 		ft_putstr_fd(va_arg(arg_ptr, char *), 1);
-	else if (var->type == 'p')
+	}
+else if (var->type == 'p')
 	{
 		ft_putstr_fd("0x", 1);
 		ft_puthex_fd(va_arg(arg_ptr, unsigned long), 1);
@@ -34,9 +50,9 @@ void	ft_var_output(t_conf_parser *var, va_list arg_ptr)
 		ft_putstr_fd("%", 1);
 }
 
-void	ft_wdth_prcsn(char *conv, t_conf_parser *var, va_list arg_ptr)
+void	ft_wdth_prcsn(const char *conv, t_conf_parser *var, va_list arg_ptr)
 {
-	va_list arg_clone;
+	//va_list arg_clone;
 
 	while (*conv == '-' || *conv == '0')
 		conv++;
@@ -51,6 +67,7 @@ void	ft_wdth_prcsn(char *conv, t_conf_parser *var, va_list arg_ptr)
 		else if (ft_isdigit(*conv))
 			var->width = ft_atoi(conv);
 	}
+	//printf("\n%d -- width-1", var->width);
 	while (*conv != '.')
 		conv++;
 	if (*conv == '.')
@@ -64,32 +81,34 @@ void	ft_wdth_prcsn(char *conv, t_conf_parser *var, va_list arg_ptr)
 	//printf(" '%d' - '%d' - '%s'",  var.width, var.precision, conv);
 }
 
-void	ft_flag_conf(char *conv, t_conf_parser *var)
+void	ft_flag_conf(const char *arg, t_conf_parser *var)
 {
-	while (*conv == '-' || *conv == '0')
+	while (*arg == '-' || *arg == '0')
 	{
-		if (*conv == '-')
+		if (*arg == '-')
 		{
 			var->flags |= FLG_MINUS;
 			var->flags &= ~FLG_ZERO;
 		}
-		else if (*conv == '0' && (var->flags << 7) != 128)
+		else if (*arg == '0' && (var->flags << 7) != 128)
 			var->flags |= FLG_ZERO;
-		conv++;
+		arg++;
+		var->skip++;
 	}
-	while (*conv != var->type)
+	while (*arg != var->type)
 	{
-		if (var->flags < 8 && (ft_isdigit(*conv) || *conv == '*'))
-			// *conv != '0'
+		if (var->flags < 8 && (ft_isdigit(*arg) || *arg == '*'))
 			var->flags |= FLG_WDTH;
-		else if (*conv == '.' && (ft_isdigit(*(conv + 1)) || *(conv + 1) ==
+		else if (*arg == '.' && (ft_isdigit(*(arg + 1)) || *(arg + 1) ==
 															 '*')) //TODO delete '*'
 			var->flags |= FLG_PRCSN;
-		conv++;
+		arg++;
+		var->skip++;
 	}
+	var->skip++;
 }
 
-void	ft_type_conf(char *conv, t_conf_parser *var)
+void	ft_type_conf(const char *conv, t_conf_parser *var)
 {
 	char	*type_set;
 	char	*temp;
@@ -102,17 +121,16 @@ void	ft_type_conf(char *conv, t_conf_parser *var)
 	{
 		while (type_set[i])
 		{
-			if (*conv == type_set[i])
+			if (*conv == type_set[i] && var->type == 0)
 			{
 				var->type = *conv;
-				free(temp);
-				break;
 			}
 			i++;
 		}
 		i = 0;
 		conv++;
 	}
+	free(temp);
 }
 
 void ft_var_clean(t_conf_parser *var)
@@ -121,42 +139,52 @@ void ft_var_clean(t_conf_parser *var)
 	var->flags &= FLG_NONE;
 	var->precision = 0;
 	var->width = 0;
-	var->count = 0; //
+	var->count = 0;
+	var->skip = 0;
 }
 
-void	ft_var_conf(char *conv, t_conf_parser *var, va_list arg_ptr)
+void	ft_var_conf(const char *arg, t_conf_parser *var, va_list arg_ptr)
 {
 	ft_var_clean(var);
-	ft_type_conf(conv, var);	//todo find type first, skipping allflags
+	ft_type_conf(arg, var);
+	//printf("\n%d -- type", var->type);
 	if (!var->type)
 		exit(0);
-	ft_flag_conf(conv, var);
-	//printf("\n'%d'-'%c'",var->flags, var->type);
+	ft_flag_conf(arg, var);
 	if (var->flags > (FLG_MINUS | FLG_ZERO))
 	{
-		ft_wdth_prcsn(conv, var, arg_ptr);
+		ft_wdth_prcsn(arg, var, arg_ptr);
+		//printf("\n%d -- width0", var->width);
 	}
-	//conv++;
-	//printf("\n'%c' --- var-type ", var.type);
 	ft_var_output(var, arg_ptr);
-	//ft_printf(conv, arg_ptr);
 }
 
 int	ft_printf(const char *arg, ...)
 {
 	va_list	arg_ptr;
-	char	*conv;
 	t_conf_parser	var;
+	int		count;
 
+	count = 0;
 	va_start(arg_ptr, arg);
-	while (*arg != '%')
-		ft_putchar_fd(*arg++, 1);
-	conv = ft_strchr(arg, '%');
-	conv++;
-	//printf("\n'%s' --- conv\n", conv);
-	ft_var_conf(conv, &var, arg_ptr); //TODO передавать conv как указатель
-	//printf("\n'%c' --- type ", var.type);
-	va_end (arg_ptr);
-	//printf("\n*conv -- '%c'\n", *conv);
-	return (var.count);
+	while (*arg)
+	{
+		if(*arg != '%')
+		{
+			ft_putchar_fd(*arg++, 1);
+			count++;
+		}
+		else
+		{
+			arg++;
+			ft_var_conf(arg, &var, arg_ptr);
+			count += var.count; //подсчёт выведеных символов
+			arg += var.skip; //подсчет расстояния от % до типа
+
+		}
+		printf("\n -- count '%d' // var.count '%d'", count, var.count);
+	}
+	va_end(arg_ptr);
+	//count++;
+	return (count);
 }

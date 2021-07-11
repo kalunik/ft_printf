@@ -11,6 +11,7 @@ typedef struct s_parser{
 	int		precision;
 	char	type;
 	int		count;
+	int		skip;
 }				t_conf_parser;
 
 # define FLG_NONE	0b00000000

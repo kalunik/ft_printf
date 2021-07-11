@@ -43,6 +43,7 @@ void printBook( struct Books *book ) {
 	printf( "Book subject : %s\n", book->subject);
 	printf( "Book book_id : %d\n", book->book_id);
 }*/
+/*
 
 struct person
 {
@@ -65,6 +66,7 @@ int main(void)
 	printf("name = %s \t age = %d \n", kate.name, kate.age);
 	return 0;
 }
+*/
 
 /*
 #include <stdio.h>
@@ -105,3 +107,8 @@ int main()
 
 	return (0);
 }*/
+
+int main ()
+{
+
+}
