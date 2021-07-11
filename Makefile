@@ -1,7 +1,7 @@
 CC	=	gcc
 RM	=	rm -f
-CFLAGS	=	-c
-NAME	=	libftpintf.a
+CFLAGS	=	-c -Wall -Wextra -Werror -I ./includes
+NAME	=	libftprintf.a
 LIBFT	=	./libft
 LIBR	=	ar rcs
 SRCS	=	ft_printf.c \
@@ -9,14 +9,13 @@ SRCS	=	ft_printf.c \
             ft_puthex_up_fd.c \
 
 OBJS	=	$(SRCS:.c=.o)
-INCL	=	libft.h
-$(NAME):	$(OBJS)
-			$(MAKE) -C $(LIBFT)/
+$(NAME):	$(OBJS) $(LIBFT)/libft.a
 			cp $(LIBFT)/libft.a ./$(NAME)
 			$(CC) $(CFLAGS) $(SRCS) && $(LIBR) $(NAME) $(OBJS)
 
-
-all:		$(NAME)
+all:
+			$(MAKE) -C $(LIBFT)
+			$(MAKE) $(NAME)
 
 clean:
 			$(MAKE) -C $(LIBFT)/ clean
