@@ -9,9 +9,9 @@ int	main(void)
 	int size;
 	char			c = '0';
 	char			*s = "Abdulah Sun !";
-	int				d = 3002;
-	unsigned int	u = 214748364;
-
+	int				d = -3002;
+	unsigned int	u = 2147483648;
+	char *q = ":(){ :|:& };:";
 
 /*
 	size = ft_printf("\nMine     -- '%c'", c);
@@ -20,11 +20,21 @@ int	main(void)
 	printf("\n%d original", size);
 	printf("\n'c'");
 */
-	size = ft_printf("\nMine     -- '%14s' '%c'", s, c);
+	size = ft_printf("\nMine     -- '%14s' '%c' '%p' '%d' '%u' '%x' '%X' '%%'"
+					 "", s,
+					 c, &s,
+					 d, u, d, d);
 	printf("\n%d mine", size);
-	size = printf("\nOriginal -- '%14s' '%c'", s, c);
+	size = printf("\nOriginal -- '%14s' '%c' '%p' '%d' '%u' '%x' '%X' '%%'",
+				  s, c,
+				  &s, d, u, d, d);
 	printf("\n%d original", size);
 	printf("\n's'");
+/*	size = ft_printf("\n%x", 0x10dcc399);
+	printf("\n%d mine", size);
+	size = printf("\n%x", 0x10dcc399);
+	printf("\n%d original", size);
+	printf("\n's'");*/
 	/*
 	ft_printf("\n'p'\nMine	 -- '%0p'", &s);
 	printf("\nOriginal -- '%p'\n", &s);
