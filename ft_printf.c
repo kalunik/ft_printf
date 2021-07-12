@@ -25,10 +25,8 @@ void	ft_var_output(t_conf_parser *var, va_list arg_ptr)
 		ft_di_out(var, arg_ptr);
 	else if (var->type == 'u')
 		ft_u_out(var, arg_ptr);
-	else if (var->type == 'x')
+	else if (var->type == 'x' || var->type == 'X')
 		ft_x_out(var, arg_ptr);
-	else if (var->type == 'X')
-		ft_x_up_out(var, arg_ptr);
 	else if (var->type == '%')
 		ft_percent_out(var);
 }

@@ -1,6 +1,6 @@
 #include "../includes/ft_printf.h"
 
-static void	ft_convert_fd(short int n, int fd)
+static void	ft_convert_fd(short int n, int fd, char var)
 {
 	char	*str;
 
@@ -29,7 +29,7 @@ void	ft_puthex_fd(unsigned long n, int fd, t_conf_parser *var)
 	}
 	else
 	{
-		ft_putchar_fd(n + '0', fd);
+		ft_convert_fd(n, 1, var->type);
 		var->count++;
 	}
 }

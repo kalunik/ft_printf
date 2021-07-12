@@ -19,8 +19,6 @@ void	ft_s_out(t_conf_parser *var, va_list arg_ptr)
 			i++;
 		}
 	}
-	else
-		i = len;
 	ft_putstr_fd(s, 1);
 	var->count = i + len - 1;
 }
