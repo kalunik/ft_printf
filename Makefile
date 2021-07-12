@@ -5,9 +5,8 @@ NAME	=	libftprintf.a
 LIBFT	=	./libft
 LIBR	=	ar rcs
 SRCS	=	ft_printf.c \
-            ft_puthex_fd.c \
-            ft_puthex_up_fd.c \
-            ft_c_out.c ft_s_out.c ft_p_out.c \
+            utils/ft_putuns_fd.c utils/ft_puthex_fd.c utils/ft_puthex_up_fd.c \
+            src/ft_c_out.c src/ft_s_out.c src/ft_p_out.c src/ft_u_out.c\
 
 OBJS	=	$(SRCS:.c=.o)
 $(NAME):	$(OBJS) $(LIBFT)/libft.a

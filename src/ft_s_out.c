@@ -1,4 +1,4 @@
-#include "includes/ft_printf.h"
+#include "../includes/ft_printf.h"
 
 void	ft_s_out(t_conf_parser *var, va_list arg_ptr)
 {
@@ -8,6 +8,8 @@ void	ft_s_out(t_conf_parser *var, va_list arg_ptr)
 
 	i = 1;
 	s = va_arg(arg_ptr, char *);
+	if (!s)
+		s = "(null)";
 	len = ft_strlen(s);
 	if (var->width > len)
 	{

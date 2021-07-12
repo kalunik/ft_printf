@@ -23,8 +23,10 @@ typedef struct s_parser{
 void	ft_c_out(t_conf_parser *var, va_list arg_ptr);
 void	ft_s_out(t_conf_parser *var, va_list arg_ptr);
 void	ft_p_out(t_conf_parser *var, va_list arg_ptr);
+void	ft_u_out(t_conf_parser *var, va_list arg_ptr);
+void	ft_putuns_fd(unsigned int n, int fd, t_conf_parser *var);
 void	ft_puthex_fd(unsigned long n, int fd, t_conf_parser *var);
-void	ft_puthex_up_fd(unsigned long n, int fd);
+void	ft_puthex_up_fd(unsigned long n, int fd, t_conf_parser *var);
 int		ft_printf(const char *arg, ...);
 
 #endif

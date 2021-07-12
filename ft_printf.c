@@ -32,7 +32,7 @@ void	ft_var_output(t_conf_parser *var, va_list arg_ptr)
 		ft_putnbr_fd(d, 1);
 	}
 	else if (var->type == 'u') // FIXME input 2147483648 -- output -2147483648
-		ft_putnbr_fd(va_arg(arg_ptr, unsigned int), 1);
+		ft_u_out(var, arg_ptr);
 /*	else if (var->type == 'x')
 		ft_puthex_fd(va_arg(arg_ptr, unsigned int), 1);
 	else if (var->type == 'X')
