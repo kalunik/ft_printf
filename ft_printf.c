@@ -6,17 +6,13 @@
 //		width:			'*'
 //		precision:		'.'
 
-
-
-
-
 void	ft_var_output(t_conf_parser *var, va_list arg_ptr)
 {
 	//int				i;
 	//char			c;
 	//char			*s;
 	//unsigned long	p;
-	long long		d;
+	//long long		d;
 
 	//printf("\n\n%d -- var_output -- width", var->width);
 	if (var->type == 'c') //TODO fail w/h width %10c
@@ -26,19 +22,15 @@ void	ft_var_output(t_conf_parser *var, va_list arg_ptr)
 	else if (var->type == 'p')
 		ft_p_out(var, arg_ptr);
 	else if (var->type == 'd' || var->type == 'i')
-	{
-		d = va_arg(arg_ptr, int);
-		var->count = ft_strlen(ft_itoa(d));
-		ft_putnbr_fd(d, 1);
-	}
-	else if (var->type == 'u') // FIXME input 2147483648 -- output -2147483648
+		ft_di_out(var, arg_ptr);
+	else if (var->type == 'u')
 		ft_u_out(var, arg_ptr);
-/*	else if (var->type == 'x')
-		ft_puthex_fd(va_arg(arg_ptr, unsigned int), 1);
+	else if (var->type == 'x')
+		ft_x_out(var, arg_ptr);
 	else if (var->type == 'X')
-		ft_puthex_up_fd(va_arg(arg_ptr, unsigned int), 1);*/
+		ft_x_up_out(var, arg_ptr);
 	else if (var->type == '%')
-		ft_putstr_fd("%", 1);
+		ft_percent_out(var);
 }
 
 void	ft_wdth_prcsn(const char *conv, t_conf_parser *var, va_list arg_ptr)
